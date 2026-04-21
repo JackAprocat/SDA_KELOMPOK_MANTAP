@@ -56,6 +56,7 @@ void tampilkanRiwayat(Stack S)
 int main()
 {
     Queue antrian;
+    Stack riwayat;
     CreateQueue(&antrian);
     int pilihan = 0;
 
@@ -64,20 +65,23 @@ int main()
         switch (pilihan)
         {
         case 1:
-            fgets(Enqueue(&MyQ, X), sizeof(MyQ), stdin);
+            tambahDokumen(&antrian);
             break;
 
         case 2:
-            printf("%s", Front(MyQ));
+            cetakDokumen(&antrian, &riwayat);
             break;
 
         case 3:
+        cancelCetak(&riwayat);
             break;
 
         case 4:
+            tampilkanAntrian(antrian);
             break;
 
         case 5:
+            tampilkanRiwayat(riwayat);
             break;
 
         default:
