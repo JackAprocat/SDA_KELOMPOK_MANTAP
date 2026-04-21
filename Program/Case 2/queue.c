@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "boolean.h"
 #include "queue.h"
 
@@ -22,18 +23,20 @@ int tampilkanQueue(Queue Q){
 
     while(P != Nil){
         printf("%s", P->data);
+        if (P->next != Nil) printf(", ");
         i++;
         P = P->next;
     }
     return i;
 }
 
-void tambahQueue(Queue *Q, infotype X){
+void tambahQueue(Queue *Q, const char* X){
     address P = (address) malloc(sizeof(ElmtList));
-    P->data = X;
+    strncpy(P->data, X, 63);
+    P->data[63] = '\0';
     P->next = Nil;
 
-    if(IsEmpty(*Q)){
+    if(queueIsEmpty(*Q)){
 		AddressHead(Q) = P;
         AddressTail(Q) = P;
 	} else {
@@ -42,41 +45,35 @@ void tambahQueue(Queue *Q, infotype X){
     }
 }
 
-char hapusQueue(Queue *Q) {
-    // Jika queue kosong
-    if (IsEmpty(*Q)) {
-        return '\0'; // representasi kosong
+char* hapusQueue(Queue *Q) {
+    if (queueIsEmpty(*Q)) {
+        return NULL;
     }
 
     address temp = AddressHead(Q);
-    char nilai = temp->data;
+    static char buffer[64];
+    strncpy(buffer, temp->data, 63);
+    buffer[63] = '\0';
 
-    // Geser head ke next
     AddressHead(Q) = temp->next;
 
-    // Jika setelah dihapus jadi kosong
     if (AddressHead(Q) == Nil) {
         AddressTail(Q) = Nil;
     }
 
-    // Bebaskan memori
     free(temp);
 
-    return nilai;
+    return buffer;
 }
 
-//Pencetekan antrian
-//Jika antrian kosong maka printf("Antrian kosong.\n")
-//I.S: awalnya kosong
-//I.S: mencetak antrian yang ada saat ini
 void CetakAntrian(Queue Q) {
-    if (IsEmpty(Q)) {
+    if (queueIsEmpty(Q)) {
         printf("Antrian kosong.\n");
     } else {
         printf("Kondisi antrian saat ini: [ ");
         address P = AddressHead(&Q);
         while (P != Nil) {
-            printf("%d ", P->data);
+            printf("%s ", P->data);
             P = P->next;
         }
         printf("]\n");

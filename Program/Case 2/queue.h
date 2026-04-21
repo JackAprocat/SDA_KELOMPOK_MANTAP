@@ -14,14 +14,14 @@
 #define MAX 100
 
 /* Definisi tipe elemen */
-typedef char infotype;
+typedef char* infotype;
 
 /* Definisi pointer */
 typedef struct tElmt *address;
 
 /* Definisi node */
 typedef struct tElmt {
-    infotype data[64]; 
+    char data[64]; 
     address next;  
 } ElmtList;
 
@@ -31,9 +31,6 @@ typedef struct {
     address TAIL;
 } Queue;
 
-
-
-
 void buatQueue(Queue *Q);
 
 boolean queueIsEmpty(Queue Q);
@@ -42,8 +39,8 @@ infotype Front(Queue Q);
 
 int tampilkanQueue(Queue Q);
 
-void tambahQueue(Queue *Q, infotype X);
+void tambahQueue(Queue *Q, const char* X);
 
-void hapusQueue(Queue *Q);
+char* hapusQueue(Queue *Q);
 
 #endif
