@@ -1,70 +1,73 @@
-
 #include "stack.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-/* --- Konstruktor --- */
-/**
- * Prosedur: Membuat stack baru yang kosong
- * IS : S sembarang
- * FS : Terbentuk stack kosong dengan TOP = Nil (NULL)
- */
-void CreateStack(Stack *S) {
-    AddressTop(S) = Nil;
+/* ===== IMPLEMENTASI ===== */
+
+// PROSEDUR buatStack(s)
+void buatStack(Stack* s) {
+    s->top = NULL;
 }
 
-/* --- Validator --- */
-/**
- * Fungsi: Mengecek apakah stack kosong
- * IS : S terdefinisi
- * FS : Mengirimkan true jika TOP == Nil, false jika tidak
- */
-boolean IsEmpty(Stack S) {
-    return (AddressTop(&S) == Nil);
-}
-
-/* --- Getter --- */
-/**
- * Fungsi: Mengambil nilai elemen teratas stack
- * IS : S tidak kosong
- * FS : Mengirimkan nilai info elemen pada posisi TOP
- */
-infotype Top(Stack S) {
-    if (!IsEmpty(S)) {
-        return (AddressTop(&S))->info;
+// PROSEDUR tambahStack(s, nilai)
+void tambahStack(Stack* s, const char* nilai) {
+    // Alokasi Node baru
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Error: Alokasi memori gagal.\n");
+        return;
     }
-    return -999;
+    
+    // Salin nilai ke data
+    strncpy(newNode->data, nilai, MAX_DATA - 1);
+    newNode->data[MAX_DATA - 1] = '\0';
+    
+    // Sisipkan di depan top
+    newNode->next = s->top;
+    s->top = newNode;
 }
 
-/* --- Operasi Stack --- */
-/**
- * Prosedur: Menambahkan elemen ke dalam stack
- * IS : S terdefinisi, mungkin kosong. X nilai yang akan dimasukkan.
- * FS : Alokasi node baru berhasil, X menjadi elemen teratas (TOP baru).
- */
-void Push(Stack *S, infotype X) {
-    address P = (address)malloc(sizeof(ElmtList));
-    if (P != Nil) {
-        P->info = X;
-        P->next = AddressTop(S);
-        AddressTop(S) = P;
-    } else {
-        printf("Alokasi Gagal\n");
+// FUNGSI hapusStack(s) -> string
+char* hapusStack(Stack* s) {
+    static char empty[MAX_DATA] = "";
+    
+    if (s->top == NULL) {
+        return empty;
     }
+    
+    // Simpan data teratas
+    static char buffer[MAX_DATA];
+    strncpy(buffer, s->top->data, MAX_DATA - 1);
+    buffer[MAX_DATA - 1] = '\0';
+    
+    // Hapus node teratas
+    Node* temp = s->top;
+    s->top = s->top->next;
+    free(temp);
+    
+    return buffer;
 }
 
-/**
- * Prosedur: Menghapus elemen dari stack
- * IS : S tidak kosong.
- * FS : Elemen teratas dihapus, nilainya disimpan di X, TOP menunjuk ke elemen berikutnya.
- */
-void Pop(Stack *S, infotype *X) {
-    if (!IsEmpty(*S)) {
-        address P = AddressTop(S);
-        *X = P->info;
-        AddressTop(S) = P->next;
-        free(P);
-    } else {
-        printf("Stack Kosong\n");
+// FUNGSI stackIsEmpty(s) -> boolean
+bool stackIsEmpty(Stack* s) {
+    return (s->top == NULL);
+}
+
+// PROSEDUR tampilkanStack(s)
+void tampilkanStack(Stack* s) {
+    if (stackIsEmpty(s)) {
+        printf(" kosong ");
+        return;
     }
+    
+    Node* curr = s->top;
+    while (curr != NULL) {
+        printf("%s", curr->data);
+        if (curr->next != NULL) {
+            printf(" -> ");
+        }
+        curr = curr->next;
+    }
+    printf("\n");
 }

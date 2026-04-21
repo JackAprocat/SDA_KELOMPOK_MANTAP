@@ -1,50 +1,36 @@
+#ifndef STACK_H
+#define STACK_H
 
-#include "boolean.h"
-#include <stdlib.h>
-#define Nil NULL
-#define AddressTop(S) (S)->TOP /* Penunjuk alamat TOP */
+#include <stdbool.h>
 
-/* Definisi tipe elemen */
-typedef int infotype;
+#define MAX_DATA 64
 
-/* Definisi pointer ke node */
-typedef struct tElmt *address;
+// Node untuk linked list
+typedef struct Node {
+    char data[MAX_DATA];
+    struct Node* next;
+} Node;
 
-/* Definisi node */
-typedef struct tElmt {
-    infotype info; /* data */
-    address next;  /* pointer ke elemen berikutnya */
-} ElmtList;
-
-/* Definisi Stack */
+// Struktur Stack
 typedef struct {
-    address TOP; /* pointer ke elemen teratas */
+    Node* top;
 } Stack;
 
-/*==============================================================*/
-/*                      PROTOTYPE                               */
-/*==============================================================*/
+/* ===== OPERASI STACK SESUAI PSEUDOCODE ===== */
 
-/* Konstruktor */
-/* I.S. sembarang */
-/* F.S. Stack kosong dengan TOP = NULL */
-void CreateStack(Stack *S);
+// PROSEDUR buatStack(s)
+void buatStack(Stack* s);
 
-/* Validator */
-/* Mengirim true jika stack kosong, sebaliknya false jika tidak kosong */
-boolean IsEmpty(Stack S);
+// PROSEDUR tambahStack(s, nilai)
+void tambahStack(Stack* s, const char* nilai);
 
-/* Getter */
-/* Mengirim nilai info elemen teratas stack */
-infotype Top(Stack S);
+// FUNGSI hapusStack(s) -> string
+char* hapusStack(Stack* s);
 
-/* Operator menambahkan elemen ke dalam stack*/
-/* I.S. Stack terdefinisi */
-/* F.S. Elemen X ditambahkan sebagai TOP */
-void Push(Stack *S, infotype X);
+// FUNGSI stackIsEmpty(s) -> boolean
+bool stackIsEmpty(Stack* s);
 
-/* Operator menghapus elemen ke dalam stack, sekaligus mengambil nilai info elemen yang dihapus*/
-/* I.S. Stack tidak kosong */
-/* F.S. Elemen TOP dihapus dan disimpan di X */
-void Pop(Stack *S, infotype *X);
+// PROSEDUR tampilkanStack(s)
+void tampilkanStack(Stack* s);
 
+#endif
